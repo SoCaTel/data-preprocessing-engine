@@ -1,0 +1,5 @@
+0 7 * * * root cd /socatel/reco && python3 -m src.scorers.user_to_item_rec_handler --item_index so_group >> /var/log/cron.log 2>&1
+15 7 * * * root cd /socatel/reco && python3 -m src.scorers.item_similarity_handler --item_index so_group --sec_item_index so_service >> /var/log/cron.log 2>&1
+35 7 * * * root cd /socatel/reco && python3 -m src.scorers.item_similarity_handler --item_index so_group --sec_item_index so_organisation >> /var/log/cron.log 2>&1
+45 7 * * * root cd /socatel/reco && python3 -m src.scorers.user_to_services_rec_handler >> /var/log/cron.log 2>&1
+55 7 * * * root cd /socatel/reco && python3 -m src.scorers.item_similarity_handler --item_index so_service --sec_item_index so_service >> /var/log/cron.log 2>&1

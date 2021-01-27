@@ -1,0 +1,1 @@
+0 6 * * * root cd /socatel/reco && python3 -m src.scorers.sentiment_scorer >> /var/log/cron.log 2>&1

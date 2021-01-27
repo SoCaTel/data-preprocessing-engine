@@ -1,0 +1,1 @@
+In this folder, you will find text files generated from MongoDB updated user ratings and item similarity scores

@@ -1,0 +1,113 @@
+elasticsearch:
+    host: "<insert_elastic_host>"  # e.g. "127.0.0.1"
+    port: "9200"  # Default Elasticsearch port, change accordingly
+    user: "<insert_elasticsearch_username>"
+    passwd: "<insert_elasticsearch_password>"
+    # The following are the pre-defined names of elasticsearch indices for the SoCaTel project which
+    # host data shared with the front-end.
+    twitter_index: "kb_twitter_raw"
+    history_index: "so_history"
+    services_index: "so_service"
+    groups_index: "so_group"
+    users_index: "so_user"
+    organisations_index: "so_organisation"
+mongo:
+    host: "<insert_host_name>" # e.g. 'localhost' or a docker instance's name
+    port: 27017  # default MongoDB port, change as necessary
+    username: "default_username"
+    password: "default_password"
+    # The following are pre-defined collection names for the supported relationships between elasticsearch indices
+    user:
+        so_service:
+            db_name: "user_to_services"
+        so_group:
+            db_name: "user_to_groups"
+    so_service:
+        so_group:
+            db_name: "services_to_group"
+        so_service:
+            db_name: "services_to_services"
+    so_group:
+        so_service:
+            db_name: "groups_to_services"
+        so_group:
+            db_name: "groups_to_groups"
+        so_organisation:
+            db_name: "groups_to_organisations"
+        sentiment:
+            db_name: 'group_sentiment'
+sentiment_api:
+    url: "<insert_predictionio_sentiment_classification_engine_url>"  # e.g. "http://127.0.0.1:8000/queries.json"
+graphql:
+    graphQL_endpoint: "<insert_graphql_endpoint_url>"  # e.g. "http://127.0.0.1:8080/graphql"
+    graphQL_authorisation: "<insert_authentication_token>"  # Typically following the "Basic" HTTP authentication scheme
+    graphql_twSearchByTopics: "
+    {
+        postsByTopics(topics: $topics, language: \"$language\") {
+            identifier
+        }
+    }
+    "
+local:
+    # The following show where the recommendation engine outputs will be stored temporarily to be update MongoDB records.
+    so_group:
+        so_service:
+            path_to_item_item_matrix: "/socatel/reco/docker_out/local_iim_group_to_service_test.txt"
+        so_group:
+            path_to_item_item_matrix: "/socatel/reco/docker_out/local_iim_group_test.txt"
+        so_organisation:
+            path_to_item_item_matrix: "/socatel/reco/docker_out/local_iim_group_to_organisation_test.txt"
+        path_to_user_item_matrix: "/socatel/reco/docker_out/local_uim_group_test.txt"
+    so_service:
+        so_group:
+            path_to_item_item_matrix: "/socatel/reco/docker_out/local_iim_service_to_group_test.txt"
+        so_service:
+            path_to_item_item_matrix: "/socatel/reco/docker_out/local_iim_service_test.txt"
+        path_to_user_item_matrix: "/socatel/reco/docker_out/local_uim_service_test.txt"
+scoring:
+    # No relationship based weighting
+    same_theme_group: 1
+    same_locality_group: 1
+    same_language_group: 1
+    min_score: 1
+    max_score: 100
+schema:
+    # Pre-defined schema for Elasticsearch indices to correctly form queries within the recommendation engine
+    so_group:
+        locality_id: "locality.locality_id"
+        locality_parent_id: "locality.locality_parent.locality_id"
+        theme_name: "themes.theme_name"
+        language_code: "language.language_code"
+        language_id: "language.language_id"
+        create_time: "group_create_time"
+        id: "group_id"
+        name: "group_name"
+        description: "group_description"
+        title:
+    so_history:
+        id: "history_id"
+    so_service:
+        locality_id: "locality.id"
+        locality_parent_id: "locality.locality_parent.locality_id"
+        theme_name: "themes.theme_name"
+        language_code: "language.language_code"
+        language_id: "language.language_id"
+        id: "service_id"
+        name: "service_name"
+        description: "service_description"
+        native_description: "native_service_description"
+    so_user:
+        id: "user_id"
+        locality_id: "locality.id"
+        locality_parent_id: "locality.locality_parent.locality_id"
+        theme_name: "themes.theme_name"
+        language_code: "primary_language.language_code"
+        language_id: "primary_language.language_id"
+        sec_language_code: "secondary_language.language_code"
+        sec_language_id: "secondary_language.language_id"
+        group_id: "groups.group_id"
+        skill_id: "skills.skill_name"
+    so_organisation:
+        id: "organisation_id"
+        description: "twitter_account_description"
+        name: "organisation_name"
