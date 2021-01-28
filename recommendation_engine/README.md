@@ -15,8 +15,8 @@ All tools and processes are meant to be deployed under a docker container. To ge
 guide on Linux machines (preferred OS for this project).
 * Have already deployed a MongoDB docker instance within a docker network. See instructions in the next section on how 
 to set this up.
-* GraphQL, for semantic repository queries, exposed through API calls in [this](https://github.com/SoCaTel/rest-api) 
-repository.
+* GraphQL, for semantic repository queries, found [here](https://github.com/SoCaTel/socatel-graphql), exposed through
+ API calls in [this](https://github.com/SoCaTel/rest-api) repository.
 * Elasticsearch, for direct queries to the database. For help in setting up the Elasticsearch indices, refer to [this
 ](https://github.com/SoCaTel/elasticsearch-schema) repository.
 * After deploying a docker container, take a note of the docker instance's id, referenced as `<mongo_image_id>` here.
