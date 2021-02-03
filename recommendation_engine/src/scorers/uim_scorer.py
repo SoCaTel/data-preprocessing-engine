@@ -162,7 +162,7 @@ class UserToItemScorer:
 
         # More services might have been added since the last update. Add new columns in the dataset to represent these
         # new services.
-
+        interacted_with = list()
         for hit in history_hits:
             if hit['_source']['user_id'] not in list(self.uim_mtx.index):
                 new_users.append(hit['_source']['user_id'])
@@ -172,6 +172,17 @@ class UserToItemScorer:
                 hit['_source'][self.cfg['schema'][self.item_index]['id']], hit['_source']['history_text'],
                 self.uim_mtx.loc[hit['_source']['user_id']]
             )
+
+            interacted_with.append([hit['_source']['user_id'],
+                                    hit['_source'][self.cfg['schema'][self.item_index]['id']] - 1])
+
+        # Add one to negate decay for groups interacted with today.
+        for interaction in interacted_with:
+            self.uim_mtx.loc[interaction[0], interaction[1]] += 1
+
+        self.uim_mtx -= 1
+        # Correct negative scores
+        self.uim_mtx[self.uim_mtx < 0] += 1
 
         # Only calculate similar scores for this fraction of users
         self.uim_mtx.loc[new_users] = self._score_similar_items_if_null(self.uim_mtx.loc[new_users])

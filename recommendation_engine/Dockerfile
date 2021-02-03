@@ -8,14 +8,14 @@ RUN apt-get update && \
 
 # Copy files from local repo. Assumes they are stored in root dir
 WORKDIR /socatel/reco/
-COPY ../requirements.txt ./requirements.txt
+COPY ./requirements.txt ./requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt && \
     mkdir -p /var/log/ && \
     touch /var/log/cron.log
 
-COPY ../config.yml ./config.yml
-COPY ../src/scorers/* ./src/scorers/
+COPY ./config.yml ./config.yml
+COPY ./src/scorers/* ./src/scorers/
 
 # Download stopwords
 RUN python3 -W ignore -m nltk.downloader stopwords
