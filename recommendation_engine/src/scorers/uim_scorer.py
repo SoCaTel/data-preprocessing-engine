@@ -182,7 +182,7 @@ class UserToItemScorer:
 
         self.uim_mtx -= 1
         # Correct negative scores
-        self.uim_mtx[self.uim_mtx < 0] += 1
+        self.uim_mtx[self.uim_mtx < 0] = 0
 
         # Only calculate similar scores for this fraction of users
         self.uim_mtx.loc[new_users] = self._score_similar_items_if_null(self.uim_mtx.loc[new_users])
