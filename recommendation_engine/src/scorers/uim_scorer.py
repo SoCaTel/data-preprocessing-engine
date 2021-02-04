@@ -173,8 +173,10 @@ class UserToItemScorer:
                 self.uim_mtx.loc[hit['_source']['user_id']]
             )
 
-            interacted_with.append([hit['_source']['user_id'],
-                                    hit['_source'][self.cfg['schema'][self.item_index]['id']] - 1])
+            if hit['_source']['user_id'] is not None and hit['_source'][self.cfg['schema'][self.item_index]['id']] is \
+                    not None:
+                interacted_with.append([hit['_source']['user_id'],
+                                        hit['_source'][self.cfg['schema'][self.item_index]['id']] - 1])
 
         # Add one to negate decay for groups interacted with today.
         for interaction in interacted_with:
